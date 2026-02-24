@@ -3,13 +3,15 @@
 // ─────────────────────────────────────────────────────────────────────────────
 //
 // HOW TO ADD A NEW BLOCK TYPE:
-//   1. Add the type to src/types/blocks.ts (ContentBlock union)
+//   1. Add the type to src/types/wiki.ts (ContentBlock union)
 //   2. Create src/components/blocks/MyNewBlock.tsx
 //   3. Import it here and add a case in the switch
-//   4. Use the new type in any page file under content/pages/
+//   4. Add a default in seedData.ts createBlock()
+//   5. Create a form in src/components/editor/forms/MyNewBlockForm.tsx
+//   6. Register the form in BlockFormFor.tsx
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { ContentBlock } from '@/types/blocks'
+import type { ContentBlock } from '@/types/wiki'
 import { ParagraphBlock }    from './ParagraphBlock'
 import { HeadingBlock }      from './HeadingBlock'
 import { ListBlock }         from './ListBlock'
@@ -23,11 +25,18 @@ import { CardsBlock }        from './CardsBlock'
 import { FileTreeBlock }     from './FileTreeBlock'
 import { PermissionsBlock }  from './PermissionsBlock'
 import { DividerBlock }      from './DividerBlock'
+import { ImageBlock }        from './ImageBlock'
+import { QuoteBlock }        from './QuoteBlock'
+import { StatsBlock }        from './StatsBlock'
+import { RecipeBlock }       from './RecipeBlock'
+import { LinkListBlock }     from './LinkListBlock'
+import { SectionBlock }      from './SectionBlock'
+import { RawMDBlock }        from './RawMDBlock'
 
 export function BlockRenderer({ block }: { block: ContentBlock }) {
   switch (block.type) {
     case 'paragraph':   return <ParagraphBlock   content={block.content} />
-    case 'heading':     return <HeadingBlock     level={block.level} text={block.text} id={block.id} />
+    case 'heading':     return <HeadingBlock     level={block.level} text={block.text} id={block.anchor ?? block.id} />
     case 'list':        return <ListBlock        style={block.style} items={block.items} />
     case 'table':       return <TableBlock       headers={block.headers} rows={block.rows} caption={block.caption} />
     case 'callout':     return <CalloutBlock     variant={block.variant} title={block.title} content={block.content} />
@@ -39,18 +48,35 @@ export function BlockRenderer({ block }: { block: ContentBlock }) {
     case 'fileTree':    return <FileTreeBlock    title={block.title} root={block.root} />
     case 'permissions': return <PermissionsBlock title={block.title} items={block.items} />
     case 'divider':     return <DividerBlock />
+    case 'image':       return <ImageBlock       src={block.src} alt={block.alt} caption={block.caption} />
+    case 'quote':       return <QuoteBlock       content={block.content} author={block.author} />
+    case 'stats':       return <StatsBlock       title={block.title} items={block.items} />
+    case 'recipe':      return <RecipeBlock      title={block.title} ingredients={block.ingredients} result={block.result} shape={block.shape} />
+    case 'linklist':    return <LinkListBlock    title={block.title} items={block.items} />
+    case 'section':     return <SectionBlock     title={block.title} description={block.description} children={block.children} />
+    case 'rawmd':       return <RawMDBlock       content={block.content} />
     default:
-      // Unknown block types are silently ignored (allows safe forward compat)
       return null
   }
 }
 
-/** Renders an array of blocks in order */
-export function BlocksRenderer({ blocks }: { blocks: ContentBlock[] }) {
+interface BlocksRendererProps {
+  blocks: ContentBlock[]
+  slug?: string
+  editorMode?: boolean
+}
+
+/** Renders an array of blocks. When editorMode=true, wraps in BlockEditorList */
+export function BlocksRenderer({ blocks, slug, editorMode = false }: BlocksRendererProps) {
+  if (editorMode && slug) {
+    // Dynamic import to avoid SSR issues with dnd-kit
+    const { BlockEditorList } = require('@/components/editor/BlockEditorList')
+    return <BlockEditorList blocks={blocks} slug={slug} />
+  }
   return (
     <>
-      {blocks.map((block, i) => (
-        <BlockRenderer key={i} block={block} />
+      {blocks.map((block) => (
+        <BlockRenderer key={block.id} block={block} />
       ))}
     </>
   )

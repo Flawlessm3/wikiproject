@@ -6,12 +6,25 @@ import { BookOpen, Github, ExternalLink } from 'lucide-react'
 import { ThemeToggle }       from '@/components/ui/ThemeToggle'
 import { SearchTrigger }     from '@/components/ui/SearchModal'
 import { MobileMenuButton }  from '@/components/sidebar/SidebarMobileDrawer'
+import { EditorModeToggle }  from '@/components/editor/EditorModeToggle'
 import { cn }                from '@/lib/utils'
+import { useWikiStore, selectSettings } from '@/store/wikiStore'
 import { wikiConfig }        from 'content/config/wiki.config'
 
 export function Navbar() {
   const pathname = usePathname()
-  const { site, navbar } = wikiConfig
+  const storeSettings = useWikiStore(selectSettings)
+
+  // Use store settings if available, fall back to static config during load
+  const siteName     = storeSettings?.name        ?? wikiConfig.site.name
+  const logoText     = storeSettings?.logoText     ?? wikiConfig.site.logoText
+  const version      = storeSettings?.version      ?? wikiConfig.site.version
+  const githubUrl    = storeSettings?.githubUrl    ?? wikiConfig.site.githubUrl
+  const navLinks     = storeSettings?.navbarLinks  ?? wikiConfig.navbar.links
+  const showSearch   = storeSettings?.showSearch   ?? wikiConfig.navbar.showSearch
+  const showTheme    = storeSettings?.showThemeToggle ?? wikiConfig.navbar.showThemeToggle
+  const showGithub   = storeSettings?.showGithub   ?? wikiConfig.navbar.showGithub
+  const baseRoute    = wikiConfig.docs.baseRoute
 
   return (
     <header
@@ -28,25 +41,25 @@ export function Navbar() {
         {/* ── Brand ── */}
         <div className="flex items-center gap-3 flex-shrink-0 min-w-[var(--tw-sidebar)]">
           <Link
-            href={wikiConfig.docs.baseRoute}
+            href={baseRoute}
             className="flex items-center gap-2.5 text-text-primary hover:opacity-80 transition-opacity"
-            aria-label={`${site.name} — главная`}
+            aria-label={`${siteName} — главная`}
           >
             <span className="flex items-center justify-center w-7 h-7 rounded-md bg-accent text-white text-sm font-bold">
               <BookOpen size={14} />
             </span>
-            <span className="font-semibold tracking-tight text-base">{site.logoText}</span>
+            <span className="font-semibold tracking-tight text-base">{logoText}</span>
           </Link>
-          {site.version && (
+          {version && (
             <span className="text-[11px] font-mono font-medium px-2 py-0.5 rounded-full bg-bg-elevated border border-border text-text-muted">
-              {site.version}
+              {version}
             </span>
           )}
         </div>
 
         {/* ── Center nav links ── */}
         <nav className="hidden md:flex items-center gap-0.5 flex-1" aria-label="Основная навигация">
-          {navbar.links.map(({ label, href, external, badge }) => {
+          {navLinks.map(({ label, href, external, badge }) => {
             const isActive = !external && href !== '#' && pathname.startsWith(href)
             return (
               <Link
@@ -78,11 +91,12 @@ export function Navbar() {
 
         {/* ── Right actions ── */}
         <div className="ml-auto flex items-center gap-1.5 flex-shrink-0">
-          {navbar.showSearch && <SearchTrigger />}
-          {navbar.showThemeToggle && <ThemeToggle />}
-          {navbar.showGithub && site.githubUrl && (
+          <EditorModeToggle />
+          {showSearch && <SearchTrigger />}
+          {showTheme && <ThemeToggle />}
+          {showGithub && githubUrl && (
             <a
-              href={site.githubUrl}
+              href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 flex items-center justify-center rounded-md text-text-muted hover:text-text-primary hover:bg-bg-hover transition-colors"

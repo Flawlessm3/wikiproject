@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
+import { WikiProvider } from '@/components/providers/WikiProvider'
 import './globals.css'
 
 const inter = Inter({
@@ -46,7 +47,9 @@ export default function RootLayout({
           enableSystem={false}
           storageKey="wiki-theme"
         >
-          {children}
+          <WikiProvider>
+            {children}
+          </WikiProvider>
         </ThemeProvider>
       </body>
     </html>

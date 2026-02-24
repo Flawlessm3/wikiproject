@@ -1,5 +1,5 @@
 import type { TOCItem } from '@/types'
-import type { ContentBlock } from '@/types/blocks'
+import type { ContentBlock } from '@/types/wiki'
 import { slugify } from './utils'
 
 /**
