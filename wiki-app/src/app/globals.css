@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   Edit here to retheme the entire site.
+   Colors use "R G B" format so Tailwind can apply opacity modifiers.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Fonts — swap these to change typography globally */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Layout */
+  --nav-height: 3.5rem;  /* 56px */
+
+  /* ── Light Theme Colors (RGB triplets for Tailwind opacity support) ── */
+  --bg-base:      255 255 255;   /* white */
+  --bg-surface:   247 249 252;   /* slate-50ish */
+  --bg-elevated:  240 244 249;   /* slate-100ish */
+  --bg-hover:     229 234 242;   /* slate-200ish */
+  --bg-active:    218 226 238;   /* slate-200 */
+  --bg-subtle:    244 246 250;   /* code bg */
+
+  --border:        221 228 238;
+  --border-subtle: 237 241 248;
+  --border-strong: 200 208 226;
+
+  --text-primary:   15  23  42;   /* slate-900 */
+  --text-secondary: 68  84 104;   /* slate-600 */
+  --text-muted:    136 150 176;   /* slate-400 */
+  --text-disabled: 200 208 224;
+
+  --accent:        99 102 241;   /* indigo-500 */
+  --accent-hover: 124 127 245;
+  --accent-active: 165 180 252;  /* indigo-300 */
+  --accent-subtle: 238 238 253;
+  --accent-border: 179 180 249;
+
+  --callout-info:    59 130 246;
+  --callout-tip:     16 185 129;
+  --callout-warning: 245 158  11;
+  --callout-danger:  239  68  68;
+  --callout-note:    139  92 246;
+}
+
+/* ── Dark Theme ─────────────────────────────────────────────────── */
+.dark {
+  --bg-base:      12  14  21;
+  --bg-surface:   17  20  31;
+  --bg-elevated:  23  27  40;
+  --bg-hover:     34  38  57;
+  --bg-active:    40  45  68;
+  --bg-subtle:     9  11  16;
+
+  --border:        28  32  54;
+  --border-subtle: 21  24  40;
+  --border-strong: 39  44  72;
+
+  --text-primary:  221 228 240;
+  --text-secondary: 136 146 168;
+  --text-muted:     82  96 122;
+  --text-disabled:  50  58  82;
+
+  --accent:        99 102 241;
+  --accent-hover: 124 127 245;
+  --accent-active: 165 180 252;
+  --accent-subtle: 22  23  55;
+  --accent-border: 62  64 120;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg-base text-text-primary font-sans antialiased;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background-color: rgb(var(--accent-subtle));
+    color: rgb(var(--text-primary));
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar        { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track  { background: transparent; }
+  ::-webkit-scrollbar-thumb  {
+    background: rgb(var(--border-strong));
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgb(var(--text-muted)); }
+
+  /* Focus visible */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent rounded-sm;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+
+  /* Sidebar height accounting for fixed navbar */
+  .sidebar-height {
+    height: calc(100vh - var(--nav-height));
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HEADING ANCHOR LINKS
+   Shown on hover next to headings inside article content.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  position: relative;
+  scroll-margin-top: calc(var(--nav-height) + 1.5rem);
+}
+
+.heading-anchor {
+  @apply absolute -left-6 top-1/2 -translate-y-1/2;
+  @apply opacity-0 transition-opacity duration-150;
+  @apply text-text-muted hover:text-accent;
+  @apply flex items-center justify-center;
+  width: 1.25rem;
+}
+
+.prose h2:hover .heading-anchor,
+.prose h3:hover .heading-anchor,
+.prose h4:hover .heading-anchor {
+  opacity: 1;
+}

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WikiDocs — модульный шаблон документации">
+  <title>Introduction — WikiDocs</title>
+
+  <!-- Google Fonts — swap to change typography globally -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- CSS Module Stack — load order matters -->
+  <link rel="stylesheet" href="assets/css/01-tokens.css">
+  <link rel="stylesheet" href="assets/css/02-reset.css">
+  <link rel="stylesheet" href="assets/css/03-layout.css">
+  <link rel="stylesheet" href="assets/css/04-navbar.css">
+  <link rel="stylesheet" href="assets/css/05-sidebar.css">
+  <link rel="stylesheet" href="assets/css/06-content.css">
+  <link rel="stylesheet" href="assets/css/07-toc.css">
+  <link rel="stylesheet" href="assets/css/08-utilities.css">
+  <link rel="stylesheet" href="assets/css/09-states.css">
+  <link rel="stylesheet" href="assets/css/10-responsive.css">
+</head>
+
+<body class="docs-layout">
+
+  <!-- Accessibility: skip link -->
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+
+  <!-- ╔══════════════════════════════════════════════════════╗
+       ║  MODULE: TopNavbar                                   ║
+       ╚══════════════════════════════════════════════════════╝ -->
+  <header class="navbar" role="banner">
+    <div class="navbar__inner">
+
+      <!-- Brand zone -->
+      <div class="navbar__brand">
+        <a href="/" class="navbar__logo" aria-label="WikiDocs Home">
+          <div class="navbar__logo-icon" aria-hidden="true">W</div>
+          <span class="navbar__logo-text">WikiDocs</span>
+        </a>
+        <span class="navbar__version-badge">v1.0</span>
+      </div>
+
+      <!-- Center nav links -->
+      <nav class="navbar__nav" role="navigation" aria-label="Primary navigation">
+        <a href="#" class="navbar__nav-link navbar__nav-link--active" aria-current="page">Docs</a>
+        <a href="#" class="navbar__nav-link">API</a>
+        <a href="#" class="navbar__nav-link">Examples</a>
+        <a href="#" class="navbar__nav-link">Changelog</a>
+      </nav>
+
+      <!-- Right action zone -->
+      <div class="navbar__actions">
+
+        <!-- MODULE: SearchBar trigger -->
+        <button class="navbar__search-btn" aria-label="Search documentation" data-action="open-search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <span class="navbar__search-hint">
+            Search docs&hellip;
+            <kbd aria-label="Control K">Ctrl K</kbd>
+          </span>
+        </button>
+
+        <!-- MODULE: ThemeToggle -->
+        <button class="theme-toggle" aria-label="Switch to light mode" data-action="toggle-theme">
+          <!-- Sun icon (shown in dark mode) -->
+          <svg class="theme-toggle__icon theme-toggle__icon--dark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <!-- Moon icon (shown in light mode) -->
+          <svg class="theme-toggle__icon theme-toggle__icon--light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <!-- GitHub icon link -->
+        <a href="#" class="navbar__icon-btn" aria-label="View on GitHub" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <button class="navbar__mobile-btn" aria-label="Open navigation menu" aria-expanded="false" data-action="toggle-sidebar">
+        <span class="navbar__hamburger" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
+
+    </div>
+  </header><!-- /navbar -->
+
+
+  <!-- ╔══════════════════════════════════════════════════════╗
+       ║  DOCS LAYOUT BODY                                    ║
+       ║  3-column: sidebar | content | toc                   ║
+       ╚══════════════════════════════════════════════════════╝ -->
+  <div class="docs-layout__body">
+
+
+    <!-- ┌──────────────────────────────────────────────────┐
+         │  MODULE: SidebarNavigation                       │
+         └──────────────────────────────────────────────────┘ -->
+    <aside class="sidebar" role="navigation" aria-label="Sidebar navigation" id="sidebar">
+      <div class="sidebar__inner">
+
+        <!-- Sidebar search -->
+        <div class="sidebar__search-wrap">
+          <div class="search-bar search-bar--sidebar" role="search">
+            <svg class="search-bar__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input class="search-bar__input" type="search" placeholder="Quick find..." aria-label="Search documentation">
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar__nav" aria-label="Documentation sections">
+
+          <!-- ── MODULE: SidebarGroup ── -->
+          <div class="sidebar-group">
+            <span class="sidebar-group__label">Getting Started</span>
+            <ul class="sidebar-group__list" role="list">
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link sidebar-item__link--active" aria-current="page">Introduction</a>
+              </li>
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">Quick Start</a>
+              </li>
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">Installation</a>
+              </li>
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">Configuration</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-group">
+            <span class="sidebar-group__label">Core Concepts</span>
+            <ul class="sidebar-group__list" role="list">
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">Overview</a>
+              </li>
+              <!-- ── MODULE: SidebarAccordion (expanded) ── -->
+              <li class="sidebar-item sidebar-item--has-children">
+                <button class="sidebar-accordion__trigger" aria-expanded="true" data-accordion>
+                  <span>Architecture</span>
+                  <svg class="sidebar-accordion__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </button>
+                <!-- ── SidebarAccordion list (open) ── -->
+                <ul class="sidebar-accordion__list" aria-hidden="false" role="list">
+                  <li class="sidebar-item sidebar-item--nested">
+                    <a href="#" class="sidebar-item__link">Components</a>
+                  </li>
+                  <li class="sidebar-item sidebar-item--nested">
+                    <a href="#" class="sidebar-item__link">Data Flow</a>
+                  </li>
+                  <li class="sidebar-item sidebar-item--nested">
+                    <a href="#" class="sidebar-item__link">State Management</a>
+                  </li>
+                </ul>
+              </li>
+
+              <!-- ── MODULE: SidebarAccordion (collapsed) ── -->
+              <li class="sidebar-item sidebar-item--has-children">
+                <button class="sidebar-accordion__trigger" aria-expanded="false" data-accordion>
+                  <span>API Reference</span>
+                  <svg class="sidebar-accordion__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </button>
+                <ul class="sidebar-accordion__list" aria-hidden="true" role="list">
+                  <li class="sidebar-item sidebar-item--nested">
+                    <a href="#" class="sidebar-item__link">Endpoints</a>
+                  </li>
+                  <li class="sidebar-item sidebar-item--nested">
+                    <a href="#" class="sidebar-item__link">Authentication</a>
+                  </li>
+                  <li class="sidebar-item sidebar-item--nested">
+                    <a href="#" class="sidebar-item__link">Rate Limiting</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-group">
+            <span class="sidebar-group__label">Guides</span>
+            <ul class="sidebar-group__list" role="list">
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">How-to Guides</a>
+              </li>
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">Tutorials</a>
+              </li>
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">Best Practices</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-group">
+            <span class="sidebar-group__label">Reference</span>
+            <ul class="sidebar-group__list" role="list">
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">CLI Commands</a>
+              </li>
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">Config Options</a>
+              </li>
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">Glossary</a>
+              </li>
+              <!-- Disabled item example -->
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link sidebar-item__link--disabled" aria-disabled="true" tabindex="-1">
+                  Changelog
+                  <span class="sidebar-item__badge">Soon</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-group">
+            <span class="sidebar-group__label">Help</span>
+            <ul class="sidebar-group__list" role="list">
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">FAQ</a>
+              </li>
+              <li class="sidebar-item">
+                <a href="#" class="sidebar-item__link">Troubleshooting</a>
+              </li>
+            </ul>
+          </div>
+
+        </nav>
+      </div>
+    </aside><!-- /sidebar -->
+
+
+    <!-- ┌──────────────────────────────────────────────────┐
+         │  MAIN CONTENT AREA                               │
+         └──────────────────────────────────────────────────┘ -->
+    <main class="content-area" id="main-content" role="main" tabindex="-1">
+      <div class="page-container">
+
+
+        <!-- MODULE: Breadcrumbs -->
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol class="breadcrumbs__list">
+            <li class="breadcrumbs__item">
+              <a href="#" class="breadcrumbs__link">Home</a>
+            </li>
+            <li class="breadcrumbs__sep" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </li>
+            <li class="breadcrumbs__item">
+              <a href="#" class="breadcrumbs__link">Getting Started</a>
+            </li>
+            <li class="breadcrumbs__sep" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </li>
+            <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+              Introduction
+            </li>
+          </ol>
+        </nav>
+
+
+        <!-- MODULE: ArticleHeader -->
+        <header class="article-header">
+          <div class="article-header__tags">
+            <span class="badge badge--blue">Guide</span>
+            <span class="badge badge--green">Stable</span>
+            <span class="badge badge--gray">v1.0</span>
+          </div>
+          <h1 class="article-header__title">Introduction to the System</h1>
+          <p class="article-header__desc">
+            A comprehensive overview of the architecture, core concepts, and how to get started with your first project in under 5 minutes.
+          </p>
+        </header>
+
+
+        <!-- MODULE: ArticleMeta -->
+        <div class="article-meta" role="contentinfo" aria-label="Article metadata">
+          <span class="article-meta__item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Updated: Feb 24, 2026
+          </span>
+          <span class="article-meta__sep" aria-hidden="true">·</span>
+          <span class="article-meta__item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Author Name
+          </span>
+          <span class="article-meta__sep" aria-hidden="true">·</span>
+          <span class="article-meta__item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            8 min read
+          </span>
+          <span class="article-meta__sep" aria-hidden="true">·</span>
+          <!-- MODULE: ShareLinkButton -->
+          <button class="share-btn" aria-label="Copy link to this page" data-action="copy-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            Copy link
+          </button>
+        </div>
+
+
+        <!-- MODULE: Divider -->
+        <div class="divider" role="separator"></div>
+
+        <!-- MODULE: TOCCollapsible (shown on tablet/mobile, hidden on desktop) -->
+        <details class="toc-collapsible" aria-expanded="false">
+          <summary class="toc-collapsible__trigger">
+            On this page
+            <svg class="toc-collapsible__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </summary>
+          <div class="toc-collapsible__body">
+            <nav class="toc-collapsible__list" aria-label="Page sections">
+              <ul class="toc-list">
+                <li class="toc-item"><a href="#overview"          class="toc-link">Overview</a></li>
+                <li class="toc-item"><a href="#installation"      class="toc-link">Installation</a>
+                  <ul class="toc-list toc-list--nested">
+                    <li class="toc-item"><a href="#requirements"    class="toc-link toc-link--nested">Requirements</a></li>
+                    <li class="toc-item"><a href="#package-install" class="toc-link toc-link--nested">Package Install</a></li>
+                  </ul>
+                </li>
+                <li class="toc-item"><a href="#configuration"     class="toc-link">Configuration</a>
+                  <ul class="toc-list toc-list--nested">
+                    <li class="toc-item"><a href="#config-options"  class="toc-link toc-link--nested">Config Options</a></li>
+                  </ul>
+                </li>
+                <li class="toc-item"><a href="#quick-start"       class="toc-link">Quick Start</a></li>
+                <li class="toc-item"><a href="#advanced-usage"    class="toc-link">Advanced Usage</a></li>
+                <li class="toc-item"><a href="#component-gallery" class="toc-link">Component Gallery</a></li>
+              </ul>
+            </nav>
+          </div>
+        </details>
+
+
+        <!-- ═══════════════════════════════════════════════════
+             MODULE: ArticleContent
+             ═══════════════════════════════════════════════════ -->
+        <article>
+        <div class="article-content">
+
+
+          <!-- ── MODULE: HeadingBlock H2 ── -->
+          <h2 class="heading heading--h2" id="overview">
+            <a class="heading__anchor" href="#overview" aria-label="Link to section: Overview">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </a>
+            Overview
+          </h2>
+
+          <!-- MODULE: ParagraphBlock -->
+          <p class="prose">
+            This documentation covers everything you need to set up and use the system effectively. Whether you're a beginner or an experienced developer, this guide walks you through core concepts to get productive quickly.
+          </p>
+          <p class="prose">
+            The system is built around a modular architecture where each component has a single responsibility. You can use <code class="inline-code">any component</code> independently or combine them to build complex applications without unnecessary coupling.
+          </p>
+
+          <!-- MODULE: CalloutBlock — info -->
+          <div class="callout callout--info" role="note">
+            <div class="callout__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="callout__body">
+              <strong class="callout__title">Good to know</strong>
+              <p>This is an <strong>info callout</strong>. Use it for helpful context, supplementary notes, or anything that clarifies the topic without being a warning.</p>
+            </div>
+          </div>
+
+
+          <!-- ── H2 ── -->
+          <h2 class="heading heading--h2" id="installation">
+            <a class="heading__anchor" href="#installation" aria-label="Link to section: Installation"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+            Installation
+          </h2>
+
+          <p class="prose">
+            Before you begin, make sure you have <a href="#" class="prose-link">Node.js 18+</a> and a package manager installed on your machine. You can use npm, yarn, or pnpm — all are supported.
+          </p>
+
+          <!-- ── H3 ── -->
+          <h3 class="heading heading--h3" id="requirements">
+            <a class="heading__anchor" href="#requirements" aria-label="Link to section: Requirements"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+            Requirements
+          </h3>
+
+          <!-- MODULE: ListBlock — bullet, nested -->
+          <ul class="list list--bullet" role="list">
+            <li class="list__item">Node.js 18 or higher</li>
+            <li class="list__item">npm 8+, yarn 1.22+, or pnpm 8+</li>
+            <li class="list__item">
+              A modern browser (Chrome, Firefox, Safari, Edge)
+              <ul class="list list--bullet list--nested" role="list">
+                <li class="list__item">Chrome 100+</li>
+                <li class="list__item">Firefox 100+</li>
+                <li class="list__item">Safari 15+</li>
+              </ul>
+            </li>
+            <li class="list__item">At least 512 MB of free RAM</li>
+          </ul>
+
+          <!-- ── H3 ── -->
+          <h3 class="heading heading--h3" id="package-install">
+            <a class="heading__anchor" href="#package-install" aria-label="Link to section: Package Installation"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+            Package Installation
+          </h3>
+
+          <!-- MODULE: CodeBlock -->
+          <div class="code-block" role="region" aria-label="Code: bash">
+            <div class="code-block__header">
+              <span class="code-block__lang">bash</span>
+              <button class="code-block__copy" data-action="copy-code" aria-label="Copy code">
+                <svg class="code-block__copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <svg class="code-block__copy-icon code-block__copy-icon--success" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="code-block__copy-text">Copy</span>
+              </button>
+            </div>
+            <pre class="code-block__pre"><code class="code-block__code"><span class="code-token--comment"># Install via npm</span>
+npm install my-package
+
+<span class="code-token--comment"># Or using yarn</span>
+yarn add my-package
+
+<span class="code-token--comment"># Or using pnpm (recommended)</span>
+pnpm add my-package</code></pre>
+          </div>
+
+          <!-- MODULE: CalloutBlock — tip -->
+          <div class="callout callout--tip" role="note">
+            <div class="callout__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 4-3 6-3 9H8c0-3-3-5-3-9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/><path d="M9.7 17a4.5 4.5 0 0 0 4.6 0"/></svg>
+            </div>
+            <div class="callout__body">
+              <strong class="callout__title">Tip</strong>
+              <p>Using <code class="inline-code">pnpm</code> is recommended for faster installs and better disk-space efficiency when working on multiple projects.</p>
+            </div>
+          </div>
+
+
+          <!-- ── H2 ── -->
+          <h2 class="heading heading--h2" id="configuration">
+            <a class="heading__anchor" href="#configuration" aria-label="Link to section: Configuration"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+            Configuration
+          </h2>
+
+          <p class="prose">
+            Configuration is done through a <code class="inline-code">config.json</code> file in your project root. All options are optional and fall back to sensible defaults.
+          </p>
+
+          <!-- CodeBlock JSON -->
+          <div class="code-block" role="region" aria-label="Code: JSON">
+            <div class="code-block__header">
+              <span class="code-block__lang">json</span>
+              <button class="code-block__copy" data-action="copy-code" aria-label="Copy code">
+                <svg class="code-block__copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <svg class="code-block__copy-icon code-block__copy-icon--success" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="code-block__copy-text">Copy</span>
+              </button>
+            </div>
+            <pre class="code-block__pre"><code class="code-block__code">{
+  <span class="code-token--key">"name"</span>: <span class="code-token--string">"my-project"</span>,
+  <span class="code-token--key">"version"</span>: <span class="code-token--string">"1.0.0"</span>,
+  <span class="code-token--key">"settings"</span>: {
+    <span class="code-token--key">"debug"</span>: <span class="code-token--number">false</span>,
+    <span class="code-token--key">"port"</span>: <span class="code-token--number">3000</span>,
+    <span class="code-token--key">"theme"</span>: <span class="code-token--string">"dark"</span>,
+    <span class="code-token--key">"logLevel"</span>: <span class="code-token--string">"info"</span>
+  }
+}</code></pre>
+          </div>
+
+          <!-- ── H3 ── -->
+          <h3 class="heading heading--h3" id="config-options">
+            <a class="heading__anchor" href="#config-options" aria-label="Link to section: Config Options"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+            Configuration Options
+          </h3>
+
+          <!-- MODULE: TableBlock -->
+          <div class="table-wrap" role="region" aria-label="Configuration options" tabindex="0">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Option</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Default</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline-code">name</code></td>
+                  <td><span class="badge badge--gray">string</span></td>
+                  <td>—</td>
+                  <td>Project name identifier</td>
+                </tr>
+                <tr>
+                  <td><code class="inline-code">version</code></td>
+                  <td><span class="badge badge--gray">string</span></td>
+                  <td><code class="inline-code">"1.0.0"</code></td>
+                  <td>Semantic version string</td>
+                </tr>
+                <tr>
+                  <td><code class="inline-code">debug</code></td>
+                  <td><span class="badge badge--purple">boolean</span></td>
+                  <td><code class="inline-code">false</code></td>
+                  <td>Enable verbose debug logging</td>
+                </tr>
+                <tr>
+                  <td><code class="inline-code">port</code></td>
+                  <td><span class="badge badge--orange">number</span></td>
+                  <td><code class="inline-code">3000</code></td>
+                  <td>HTTP server port</td>
+                </tr>
+                <tr>
+                  <td><code class="inline-code">theme</code></td>
+                  <td><span class="badge badge--gray">string</span></td>
+                  <td><code class="inline-code">"dark"</code></td>
+                  <td>Default UI theme: <code class="inline-code">dark</code> or <code class="inline-code">light</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- MODULE: CalloutBlock — warning -->
+          <div class="callout callout--warning" role="note">
+            <div class="callout__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="callout__body">
+              <strong class="callout__title">Warning</strong>
+              <p>Changing the <code class="inline-code">port</code> option requires a server restart. Make sure no other process is already bound to that port before starting.</p>
+            </div>
+          </div>
+
+
+          <!-- ── H2 ── -->
+          <h2 class="heading heading--h2" id="quick-start">
+            <a class="heading__anchor" href="#quick-start" aria-label="Link to section: Quick Start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+            Quick Start
+          </h2>
+
+          <p class="prose">Follow these steps to get up and running in under five minutes:</p>
+
+          <!-- MODULE: ListBlock — numbered -->
+          <ol class="list list--numbered" role="list">
+            <li class="list__item">Clone the repository to your local machine</li>
+            <li class="list__item">Install dependencies using your preferred package manager</li>
+            <li class="list__item">Copy <code class="inline-code">config.example.json</code> to <code class="inline-code">config.json</code> and edit it</li>
+            <li class="list__item">Start the development server with <code class="inline-code">npm run dev</code></li>
+            <li class="list__item">Open your browser and navigate to <code class="inline-code">http://localhost:3000</code></li>
+          </ol>
+
+          <!-- CodeBlock bash commands -->
+          <div class="code-block" role="region" aria-label="Code: Available commands">
+            <div class="code-block__header">
+              <span class="code-block__lang">bash</span>
+              <button class="code-block__copy" data-action="copy-code" aria-label="Copy code">
+                <svg class="code-block__copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <svg class="code-block__copy-icon code-block__copy-icon--success" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="code-block__copy-text">Copy</span>
+              </button>
+            </div>
+            <pre class="code-block__pre"><code class="code-block__code">npm run <span class="code-token--fn">dev</span>      <span class="code-token--comment"># Start development server with hot-reload</span>
+npm run <span class="code-token--fn">build</span>    <span class="code-token--comment"># Build optimized production bundle</span>
+npm run <span class="code-token--fn">preview</span>  <span class="code-token--comment"># Preview the production build locally</span>
+npm run <span class="code-token--fn">test</span>     <span class="code-token--comment"># Run the test suite</span>
+npm run <span class="code-token--fn">lint</span>     <span class="code-token--comment"># Run ESLint and type checks</span></code></pre>
+          </div>
+
+
+          <!-- ── H2 ── -->
+          <h2 class="heading heading--h2" id="advanced-usage">
+            <a class="heading__anchor" href="#advanced-usage" aria-label="Link to section: Advanced Usage"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+            Advanced Usage
+          </h2>
+
+          <p class="prose">
+            The system supports custom plugins, middleware, and lifecycle hooks. You can extend any built-in behavior or add entirely new functionality through the plugin API.
+          </p>
+
+          <!-- CodeBlock TypeScript -->
+          <div class="code-block" role="region" aria-label="Code: TypeScript plugin interface">
+            <div class="code-block__header">
+              <span class="code-block__lang">typescript</span>
+              <button class="code-block__copy" data-action="copy-code" aria-label="Copy code">
+                <svg class="code-block__copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <svg class="code-block__copy-icon code-block__copy-icon--success" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="code-block__copy-text">Copy</span>
+              </button>
+            </div>
+            <pre class="code-block__pre"><code class="code-block__code"><span class="code-token--keyword">interface</span> <span class="code-token--type">Plugin</span> {
+  name: <span class="code-token--type">string</span>;
+  version: <span class="code-token--type">string</span>;
+  install(app: <span class="code-token--type">App</span>): <span class="code-token--type">void</span>;
+  onBeforeInit?(): <span class="code-token--type">Promise</span>&lt;<span class="code-token--type">void</span>&gt;;
+  onAfterInit?(): <span class="code-token--type">Promise</span>&lt;<span class="code-token--type">void</span>&gt;;
+}
+
+<span class="code-token--comment">// Example plugin implementation</span>
+<span class="code-token--keyword">const</span> myPlugin: <span class="code-token--type">Plugin</span> = {
+  name: <span class="code-token--string">'analytics'</span>,
+  version: <span class="code-token--string">'1.0.0'</span>,
+  <span class="code-token--fn">install</span>(app) {
+    app.<span class="code-token--fn">provide</span>(<span class="code-token--string">'analytics'</span>, {
+      <span class="code-token--fn">track</span>: (event: <span class="code-token--type">string</span>) =&gt; console.<span class="code-token--fn">log</span>(event)
+    });
+  },
+  <span class="code-token--keyword">async</span> <span class="code-token--fn">onAfterInit</span>() {
+    console.<span class="code-token--fn">log</span>(<span class="code-token--string">'Analytics plugin ready'</span>);
+  }
+};</code></pre>
+          </div>
+
+          <!-- MODULE: CalloutBlock — danger -->
+          <div class="callout callout--danger" role="alert">
+            <div class="callout__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </div>
+            <div class="callout__body">
+              <strong class="callout__title">Danger</strong>
+              <p>Do not run <code class="inline-code">npm run reset</code> in production. It permanently deletes all cached data and configuration. This action cannot be undone.</p>
+            </div>
+          </div>
+
+          <!-- MODULE: CalloutBlock — note -->
+          <div class="callout callout--note" role="note">
+            <div class="callout__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="callout__body">
+              <strong class="callout__title">Note</strong>
+              <p>Plugin names must be unique within a single app instance. Duplicate names will cause the second plugin to silently override the first.</p>
+            </div>
+          </div>
+
+          <!-- MODULE: QuoteBlock -->
+          <blockquote class="quote">
+            <p class="quote__text">"The best documentation is code that speaks for itself — but good written docs are what turn great code into great products."</p>
+            <cite class="quote__cite">— Documentation Best Practices Guide</cite>
+          </blockquote>
+
+
+          <!-- ── H2 ── -->
+          <h2 class="heading heading--h2" id="component-gallery">
+            <a class="heading__anchor" href="#component-gallery" aria-label="Link to section: Component Gallery"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+            Component Gallery
+          </h2>
+
+          <p class="prose">Below are all system state modules you can drop into any page as needed.</p>
+
+          <!-- MODULE: Divider -->
+          <div class="divider divider--subtle" role="separator"></div>
+
+          <!-- MODULE: MediaBlock placeholder -->
+          <figure class="media-block" aria-label="Image placeholder">
+            <div class="media-block__placeholder">
+              <svg class="media-block__placeholder-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <p class="media-block__placeholder-text">Image / Media Slot</p>
+              <span class="media-block__placeholder-hint">Drop an &lt;img&gt;, &lt;video&gt;, or &lt;iframe&gt; here</span>
+            </div>
+          </figure>
+
+          <!-- MODULE: EmptyState -->
+          <div class="state-block state-block--empty" role="status" aria-label="Empty section">
+            <div class="state-block__icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3 class="state-block__title">No content yet</h3>
+            <p class="state-block__desc">This section is empty. Add your first item to get started.</p>
+            <button class="btn btn--primary btn--sm">Add Item</button>
+          </div>
+
+          <!-- MODULE: ErrorState -->
+          <div class="state-block state-block--error" role="alert">
+            <div class="state-block__icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </div>
+            <h3 class="state-block__title">Something went wrong</h3>
+            <p class="state-block__desc">Failed to load content. Check your connection and try again.</p>
+            <button class="btn btn--ghost btn--sm">Try Again</button>
+          </div>
+
+          <!-- MODULE: LoadingState / Skeleton -->
+          <div class="skeleton-block" aria-busy="true" aria-label="Loading content" role="status">
+            <div class="skeleton skeleton--title"></div>
+            <div class="skeleton skeleton--text"></div>
+            <div class="skeleton skeleton--text skeleton--text-short"></div>
+            <div class="skeleton skeleton--text"></div>
+            <div class="skeleton skeleton--code"></div>
+          </div>
+
+          <!-- MODULE: NoResultsState -->
+          <div class="state-block state-block--no-results" role="status">
+            <div class="state-block__icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </div>
+            <h3 class="state-block__title">No results found</h3>
+            <p class="state-block__desc">No articles matched your search. Try different keywords or <a href="#" class="prose-link">browse all docs</a>.</p>
+          </div>
+
+
+        </div><!-- /article-content -->
+        </article>
+
+
+        <!-- MODULE: Divider -->
+        <div class="divider" role="separator"></div>
+
+        <!-- MODULE: RelatedLinksBlock -->
+        <section class="related-links" aria-label="Related articles">
+          <h3 class="related-links__title">Related Articles</h3>
+          <div class="related-links__grid">
+            <a href="#" class="related-card" aria-label="Quick Start Guide">
+              <span class="related-card__label">Next step</span>
+              <span class="related-card__title">Quick Start Guide</span>
+              <span class="related-card__arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="#" class="related-card" aria-label="Configuration Options">
+              <span class="related-card__label">Reference</span>
+              <span class="related-card__title">Configuration Options</span>
+              <span class="related-card__arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="#" class="related-card" aria-label="Writing Your First Plugin">
+              <span class="related-card__label">Guide</span>
+              <span class="related-card__title">Writing Your First Plugin</span>
+              <span class="related-card__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- MODULE: FeedbackBlock -->
+        <div class="feedback-block" role="form" aria-label="Page feedback">
+          <p class="feedback-block__question">Was this page helpful?</p>
+          <div class="feedback-block__actions">
+            <button class="feedback-btn feedback-btn--yes" data-action="feedback-yes" aria-label="Yes, this was helpful">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+              Yes
+            </button>
+            <button class="feedback-btn feedback-btn--no" data-action="feedback-no" aria-label="No, this was not helpful">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>
+              No
+            </button>
+          </div>
+          <p class="feedback-block__thanks" hidden aria-live="polite">Thanks for your feedback!</p>
+        </div>
+
+        <!-- MODULE: PaginationNav -->
+        <nav class="pagination-nav" aria-label="Article navigation">
+          <a href="#" class="pagination-card pagination-card--prev" aria-label="Previous article: Project Overview">
+            <span class="pagination-card__dir">← Previous</span>
+            <span class="pagination-card__title">Project Overview</span>
+          </a>
+          <a href="#" class="pagination-card pagination-card--next" aria-label="Next article: Quick Start Guide">
+            <span class="pagination-card__dir">Next →</span>
+            <span class="pagination-card__title">Quick Start Guide</span>
+          </a>
+        </nav>
+
+
+      </div><!-- /page-container -->
+    </main><!-- /content-area -->
+
+
+    <!-- ┌──────────────────────────────────────────────────┐
+         │  MODULE: TableOfContentsPanel                    │
+         └──────────────────────────────────────────────────┘ -->
+    <aside class="toc-panel" aria-label="Table of contents">
+      <div class="toc-panel__inner">
+        <p class="toc-panel__title">On this page</p>
+        <nav aria-label="Page sections">
+          <ul class="toc-list">
+            <li class="toc-item">
+              <a href="#overview" class="toc-link">Overview</a>
+            </li>
+            <li class="toc-item">
+              <a href="#installation" class="toc-link">Installation</a>
+              <ul class="toc-list toc-list--nested">
+                <li class="toc-item"><a href="#requirements"    class="toc-link toc-link--nested">Requirements</a></li>
+                <li class="toc-item"><a href="#package-install" class="toc-link toc-link--nested">Package Install</a></li>
+              </ul>
+            </li>
+            <li class="toc-item">
+              <a href="#configuration" class="toc-link">Configuration</a>
+              <ul class="toc-list toc-list--nested">
+                <li class="toc-item"><a href="#config-options" class="toc-link toc-link--nested">Config Options</a></li>
+              </ul>
+            </li>
+            <li class="toc-item">
+              <a href="#quick-start" class="toc-link">Quick Start</a>
+            </li>
+            <li class="toc-item">
+              <a href="#advanced-usage" class="toc-link">Advanced Usage</a>
+            </li>
+            <li class="toc-item">
+              <a href="#component-gallery" class="toc-link">Component Gallery</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside><!-- /toc-panel -->
+
+
+  </div><!-- /docs-layout__body -->
+
+
+  <!-- MODULE: BackToTopButton -->
+  <button class="back-to-top" id="back-to-top" aria-label="Scroll back to top" data-action="back-to-top">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- Mobile sidebar backdrop -->
+  <div class="sidebar-overlay" id="sidebar-overlay" data-action="close-sidebar" aria-hidden="true"></div>
+
+
+  <!-- ╔══════════════════════════════════════════════════════╗
+       ║  MODULE: SearchOverlay (modal)                       ║
+       ╚══════════════════════════════════════════════════════╝ -->
+  <div class="search-overlay" id="search-overlay" role="dialog" aria-modal="true" aria-label="Search documentation" hidden>
+    <div class="search-modal">
+      <div class="search-modal__header">
+        <div class="search-bar search-bar--modal" role="search">
+          <svg class="search-bar__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input
+            class="search-bar__input"
+            type="search"
+            placeholder="Search documentation..."
+            aria-label="Search documentation"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button class="search-bar__close" data-action="close-search" aria-label="Close search">Esc</button>
+        </div>
+      </div>
+      <div class="search-modal__body">
+        <!-- MODULE: NoResultsState (for empty search) -->
+        <div class="state-block state-block--no-results state-block--inline">
+          <p class="state-block__desc">Start typing to search across all documentation pages...</p>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay__backdrop" data-action="close-search" aria-hidden="true"></div>
+  </div>
+
+
+  <!-- JavaScript — loaded at end of body -->
+  <script src="assets/js/app.js"></script>
+
+</body>
+</html>

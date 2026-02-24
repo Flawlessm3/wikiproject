@@ -1,0 +1,98 @@
+---
+title: Introduction
+description: Welcome to WikiDocs — a fully modular documentation portal template built with Next.js, TypeScript, and Tailwind CSS.
+category: Getting Started
+updatedAt: "2026-02-24"
+author: Your Name
+tags: [guide, beginner]
+related:
+  - getting-started/quick-start
+  - getting-started/installation
+---
+
+## Overview
+
+Welcome to **WikiDocs** — a fully modular documentation portal template. This site is a working, runnable example of the system architecture.
+
+This template is designed for:
+
+- **User guides** and how-to articles
+- **API references** and technical specs
+- **FAQ pages** and knowledge bases
+- **Glossaries** and term dictionaries
+- **CLI command references**
+
+<Callout type="info">
+  Everything you see on this page comes from the file `content/docs/getting-started/introduction.mdx`. Edit that file to change this content.
+</Callout>
+
+## Project Structure
+
+The project is organized so that content and code are completely separated:
+
+```
+wiki-app/
+├── content/docs/          ← Your MDX articles live here
+│   ├── getting-started/
+│   ├── guides/
+│   └── ...
+└── src/
+    ├── app/               ← Next.js routing
+    ├── components/        ← UI modules (sidebar, toc, content, etc.)
+    ├── config/
+    │   └── navigation.ts  ← Sidebar structure (single source of truth)
+    └── lib/
+        └── docs.ts        ← Content loading utilities
+```
+
+## How to Add a New Page
+
+1. Create a new `.mdx` file in `content/docs/`:
+
+```
+content/docs/my-category/my-page.mdx
+```
+
+2. Add frontmatter at the top:
+
+```mdx
+---
+title: My Page Title
+description: Brief description of this page.
+category: My Category
+updatedAt: "2026-02-24"
+---
+```
+
+3. Register it in `src/config/navigation.ts`:
+
+```ts
+{ title: 'My Page', slug: 'my-category/my-page' }
+```
+
+That's it — the page appears in the sidebar and gets prev/next links automatically.
+
+## Design System
+
+All visual tokens (colors, fonts, spacing) are defined in `src/app/globals.css` as CSS custom properties. To change the color scheme, edit the `:root` block:
+
+```css
+:root {
+  --accent: 99 102 241;   /* indigo — change this to rebrand */
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+```
+
+The dark/light theme switch is handled by `next-themes` and stored in `localStorage`.
+
+## What's Next?
+
+<Callout type="tip">
+  Start with the Quick Start guide to get the site running locally in under 2 minutes.
+</Callout>
+
+Continue to the next sections:
+
+- [Quick Start](/docs/getting-started/quick-start) — get running in 2 minutes
+- [Installation](/docs/getting-started/installation) — detailed setup instructions
+- [Core Concepts: Overview](/docs/core-concepts/overview) — understand the architecture

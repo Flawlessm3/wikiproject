@@ -1,0 +1,98 @@
+---
+title: Overview
+description: How WikiDocs is structured — the content system, routing, and component architecture explained.
+category: Core Concepts
+updatedAt: "2026-02-24"
+author: Your Name
+tags: [architecture, concepts]
+---
+
+## Philosophy
+
+WikiDocs is built around three core principles:
+
+1. **Content-first** — Articles are plain MDX files. No CMS, no database.
+2. **Component modularity** — Every UI element is an independent, reusable component.
+3. **Zero lock-in** — Swap fonts, colors, or entire sections without touching the rest.
+
+## The Three Layers
+
+### 1. Content Layer
+
+Your articles live in `content/docs/` as `.mdx` files:
+
+```
+content/
+└── docs/
+    ├── getting-started/
+    │   ├── introduction.mdx
+    │   ├── quick-start.mdx
+    │   └── installation.mdx
+    ├── guides/
+    │   └── how-to-guides.mdx
+    └── faq/
+        └── index.mdx
+```
+
+Each file has a **frontmatter** block (YAML at the top) for metadata, and Markdown + JSX content below.
+
+### 2. Navigation Layer
+
+The sidebar structure is configured in a single TypeScript file:
+
+```ts
+// src/config/navigation.ts
+export const navigation = [
+  {
+    title: 'Getting Started',
+    items: [
+      { title: 'Introduction', slug: 'getting-started/introduction' },
+      { title: 'Quick Start',  slug: 'getting-started/quick-start' },
+    ],
+  },
+]
+```
+
+Adding a page = adding one line to this config + creating the MDX file.
+
+### 3. Component Layer
+
+The UI is broken into focused, independent modules:
+
+| Component       | Purpose                                    |
+|-----------------|--------------------------------------------|
+| `DocsLayout`    | 3-column grid shell (sidebar, content, TOC)|
+| `Navbar`        | Top navigation bar                         |
+| `Sidebar`       | Left navigation panel                      |
+| `SidebarGroup`  | Collapsible category section               |
+| `TOCPanel`      | Right-side "On this page" panel            |
+| `TOCScrollspy`  | Highlights active heading while scrolling  |
+| `MDXContent`    | Renders MDX with custom components         |
+| `Callout`       | Info/tip/warning/danger/note blocks        |
+| `CodeBlock`     | Syntax-highlighted code with copy button   |
+| `PaginationNav` | Prev/next article navigation               |
+| `FeedbackBlock` | "Was this helpful?" widget                 |
+
+## Data Flow
+
+```
+content/docs/*.mdx
+       ↓ (gray-matter parses frontmatter)
+src/lib/docs.ts
+       ↓ (getDocBySlug)
+app/docs/[...slug]/page.tsx
+       ↓ (server component)
+DocsLayout + MDXContent
+       ↓ (rendered HTML)
+Browser
+```
+
+## Key Files to Know
+
+| File | What it does |
+|------|-------------|
+| `src/config/navigation.ts` | Sidebar structure + prev/next order |
+| `src/app/globals.css` | Design tokens (colors, fonts) |
+| `src/lib/docs.ts` | MDX file loading |
+| `src/lib/toc.ts` | TOC extraction from MDX |
+| `tailwind.config.ts` | Tailwind theme + typography |

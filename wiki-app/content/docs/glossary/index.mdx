@@ -1,0 +1,130 @@
+---
+title: Glossary
+description: Definitions of key terms used throughout the WikiDocs documentation.
+category: Reference
+updatedAt: "2026-02-24"
+author: Your Name
+tags: [glossary, reference, terms]
+---
+
+A reference dictionary of terms used in this documentation.
+
+---
+
+## A
+
+### App Router
+The Next.js routing system introduced in Next.js 13, based on the `src/app/` directory. Supports React Server Components, layouts, nested routing, and loading states. WikiDocs uses App Router exclusively.
+
+### API Route
+A server-side endpoint in Next.js created by adding a `route.ts` file in `src/app/`. Not used in the default WikiDocs setup, but available for adding backend functionality.
+
+---
+
+## C
+
+### Callout
+A highlighted block used to draw attention to important information. WikiDocs provides five types: `info`, `tip`, `warning`, `danger`, and `note`. Used as `<Callout type="info">...</Callout>` in MDX.
+
+### Client Component
+A React component that runs in the browser. Declared with `'use client'` at the top of the file. Required for hooks, event handlers, and browser APIs.
+
+### CSS Custom Properties
+CSS variables declared with `--variable-name` syntax. Used in WikiDocs for all design tokens (colors, fonts). Defined in `src/app/globals.css`.
+
+---
+
+## D
+
+### Design Token
+A named variable representing a design decision (color, spacing, font size). In WikiDocs, tokens are CSS custom properties. Changing a token updates all components that use it.
+
+### Dynamic Route
+A Next.js route that matches variable URL segments. WikiDocs uses `[...slug]` (a catch-all) to handle all documentation URLs under `/docs/`.
+
+---
+
+## F
+
+### Frontmatter
+YAML metadata at the top of an MDX file, enclosed in `---` delimiters. Used to define page title, description, author, tags, and other metadata.
+
+```mdx
+---
+title: My Page
+description: A brief description.
+---
+```
+
+---
+
+## G
+
+### `gray-matter`
+An npm package that parses frontmatter from Markdown/MDX files. Used internally by `src/lib/docs.ts` to extract page metadata.
+
+---
+
+## H
+
+### Hot Reload
+Automatic browser refresh when source files change during development. Active when running `npm run dev`.
+
+---
+
+## M
+
+### MDX
+Markdown extended with JSX support. Allows using React components directly inside Markdown documents. WikiDocs article files use the `.mdx` extension.
+
+### `next-mdx-remote`
+A library for rendering MDX in Next.js App Router server components. Used in `src/components/content/MDXContent.tsx`.
+
+### `next-themes`
+A library that manages dark/light theme switching in Next.js. Stores the user's preference in `localStorage` and applies a `dark` class to `<html>`.
+
+---
+
+## R
+
+### React Server Component (RSC)
+A React component that renders entirely on the server. Has direct access to the filesystem, databases, and environment variables. Cannot use browser APIs or React state/effects.
+
+### `rehype-slug`
+A rehype plugin that adds `id` attributes to HTML headings based on their text content. Required for anchor links and TOC scrollspy to work correctly.
+
+### `remark-gfm`
+A remark plugin that enables GitHub Flavored Markdown extensions: tables, strikethrough, task lists, autolinks.
+
+---
+
+## S
+
+### Server Component
+See **React Server Component (RSC)**.
+
+### Slug
+The URL-safe identifier for a page, derived from its file path. Example: `content/docs/guides/best-practices.mdx` → slug `guides/best-practices` → URL `/docs/guides/best-practices`.
+
+### Static Generation (SSG)
+Pre-rendering pages to HTML at build time. WikiDocs uses `generateStaticParams()` to statically generate all doc pages.
+
+---
+
+## T
+
+### Tailwind CSS
+A utility-first CSS framework. Classes like `text-sm`, `bg-bg-surface`, `flex`, `rounded-lg` are applied directly in JSX. WikiDocs extends the default Tailwind config with custom CSS-variable-based colors.
+
+### `@tailwindcss/typography`
+An official Tailwind CSS plugin that styles raw HTML (from MDX) with the `prose` class. Controls heading sizes, paragraph spacing, code formatting, and more in article bodies.
+
+### Table of Contents (TOC)
+The "On this page" panel on the right side of desktop screens. Generated automatically from H2, H3, and H4 headings in the MDX file. Highlights the current section while scrolling (scrollspy).
+
+---
+
+## Z
+
+### Z-index Stack
+The layering order of positioned elements. In WikiDocs: content (0) → sidebar (40) → navbar (50) → search modal (50) → back-to-top (50).

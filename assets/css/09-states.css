@@ -1,0 +1,163 @@
+/* ==========================================================================
+   09 — STATES / SYSTEM MODULES
+   Modules: EmptyState, LoadingState / Skeleton, ErrorState, NoResultsState
+   ========================================================================== */
+
+/* ═══════════════════════════════════════════════════════════
+   MODULE 34: EmptyState
+   MODULE 36: ErrorState
+   MODULE 37: NoResultsState
+   PURPOSE: Contextual feedback blocks for different system states.
+   VARIANTS: --empty / --error / --no-results
+   ═══════════════════════════════════════════════════════════ */
+
+.state-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--sp-4);
+  padding: var(--sp-10) var(--sp-8);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--r-xl);
+  background: var(--color-bg-elevated);
+}
+
+/* Inline variant (inside other containers, like search modal) */
+.state-block--inline {
+  padding: var(--sp-6) var(--sp-4);
+  border: none;
+  background: transparent;
+  border-radius: 0;
+}
+
+/* Icon */
+.state-block__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--r-full);
+  background: var(--color-bg-overlay);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+/* Title */
+.state-block__title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--leading-snug);
+}
+
+/* Description */
+.state-block__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+  max-width: 36ch;
+  margin: 0 auto;
+}
+
+/* ─── Empty state ─── */
+.state-block--empty .state-block__icon {
+  background: var(--color-bg-overlay);
+  color: var(--color-text-muted);
+}
+
+/* ─── Error state ─── */
+.state-block--error {
+  border-color: var(--color-danger-border);
+  background: var(--color-danger-subtle);
+}
+.state-block--error .state-block__icon {
+  background: var(--color-danger-subtle);
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger-border);
+}
+.state-block--error .state-block__title {
+  color: var(--color-danger-text);
+}
+
+/* ─── No results state ─── */
+.state-block--no-results .state-block__icon {
+  background: var(--color-bg-overlay);
+  color: var(--color-text-muted);
+}
+.state-block--no-results .state-block__desc {
+  max-width: 42ch;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MODULE 35: LoadingState / Skeleton
+   PURPOSE: Loading placeholders that mimic content structure.
+   ═══════════════════════════════════════════════════════════ */
+
+.skeleton-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-6) var(--sp-5);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-xl);
+}
+
+/* Shared skeleton shimmer */
+.skeleton {
+  border-radius: var(--r-md);
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-overlay)     0%,
+    var(--color-bg-hover)       45%,
+    var(--color-bg-overlay)     100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* Skeleton variants */
+.skeleton--title {
+  height: 28px;
+  width: 55%;
+  border-radius: var(--r-md);
+}
+.skeleton--text {
+  height: 14px;
+  width: 100%;
+}
+.skeleton--text-short {
+  width: 70%;
+}
+.skeleton--code {
+  height: 80px;
+  border-radius: var(--r-lg);
+  background: linear-gradient(
+    90deg,
+    var(--color-code-bg)      0%,
+    var(--color-code-surface) 45%,
+    var(--color-code-bg)      100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+.skeleton--avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-full);
+  flex-shrink: 0;
+}
+.skeleton--badge {
+  width: 64px;
+  height: 20px;
+  border-radius: var(--r-full);
+}

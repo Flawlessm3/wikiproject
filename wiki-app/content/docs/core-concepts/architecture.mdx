@@ -1,0 +1,122 @@
+---
+title: Architecture
+description: Technical deep-dive — Next.js App Router, RSC patterns, file-based routing, and theming architecture.
+category: Core Concepts
+updatedAt: "2026-02-24"
+author: Your Name
+tags: [nextjs, rsc, architecture]
+---
+
+## Next.js App Router
+
+WikiDocs uses Next.js 14 with the **App Router**. This means:
+
+- Every file in `src/app/` is a **route segment**
+- Components are **React Server Components (RSC)** by default
+- Only interactive UI needs `'use client'`
+
+### Route Structure
+
+```
+src/app/
+├── layout.tsx           ← Root layout (ThemeProvider)
+├── page.tsx             ← / → redirect to first doc
+├── not-found.tsx        ← 404 page
+└── docs/
+    ├── layout.tsx       ← /docs layout (Navbar)
+    ├── page.tsx         ← /docs → redirect to first doc
+    └── [...slug]/
+        └── page.tsx     ← /docs/* (dynamic article page)
+```
+
+The `[...slug]` catch-all route handles all doc URLs:
+- `/docs/getting-started/introduction` → `params.slug = ['getting-started', 'introduction']`
+- `/docs/faq` → `params.slug = ['faq']`
+
+## Server vs Client Components
+
+<Callout type="info">
+  The App Router renders components on the server by default. `'use client'` should only be added when you need browser APIs, React state, or event listeners.
+</Callout>
+
+| Component | Type | Reason |
+|-----------|------|--------|
+| `DocsLayout` | Client | Manages sidebar open/close state |
+| `Navbar` | Client | `usePathname()` for active links |
+| `SidebarGroup` | Client | Accordion open/close state |
+| `TOCScrollspy` | Client | `IntersectionObserver` |
+| `ThemeToggle` | Client | `useTheme()` hook |
+| `BackToTop` | Client | Scroll position detection |
+| `Sidebar` | Server | Static nav structure |
+| `TOCPanel` | Server | Static TOC list |
+| `MDXContent` | Server | Static content rendering |
+| `ArticleHeader` | Server | Static markup |
+| `RelatedLinks` | Server | File system reads |
+
+## Content Loading
+
+All content loading happens **server-side at request time** (or build time with `generateStaticParams`):
+
+```ts
+// src/lib/docs.ts
+export function getDocBySlug(slug: string[]): Doc | null {
+  // Reads from filesystem: content/docs/<slug>.mdx
+  // Parses with gray-matter
+  // Returns { frontmatter, content, href, slug }
+}
+```
+
+<Callout type="tip">
+  Because content is loaded at build time via `generateStaticParams`, the production site is a **static export** — fast, cacheable, and deployable to any CDN.
+</Callout>
+
+## Theming Architecture
+
+The theme system has two layers:
+
+### Layer 1: CSS Custom Properties
+
+`src/app/globals.css` defines colors as RGB triplets:
+
+```css
+:root {
+  --accent: 99 102 241;      /* light mode */
+}
+.dark {
+  --accent: 124 127 245;     /* dark mode override */
+}
+```
+
+### Layer 2: Tailwind extends these
+
+`tailwind.config.ts` maps the CSS vars to Tailwind color names:
+
+```ts
+colors: {
+  accent: { DEFAULT: 'rgb(var(--accent) / <alpha-value>)' }
+}
+```
+
+This means `bg-accent`, `text-accent`, `border-accent/50` all work correctly in both themes **without any JavaScript**.
+
+### Dark Mode Toggle
+
+`next-themes` adds/removes the `dark` class on `<html>`:
+
+```tsx
+// src/app/layout.tsx
+<ThemeProvider attribute="class" defaultTheme="dark">
+```
+
+## MDX Pipeline
+
+```
+.mdx file
+    ↓ gray-matter → { frontmatter, content }
+    ↓ next-mdx-remote/rsc (MDXRemote)
+    ↓   remarkPlugins: [remark-gfm]
+    ↓   rehypePlugins: [rehype-slug]  ← adds IDs to headings
+    ↓   components: mdxComponents     ← custom heading/code/table
+    ↓
+Rendered HTML + React components
+```

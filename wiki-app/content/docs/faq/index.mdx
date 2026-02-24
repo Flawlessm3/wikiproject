@@ -1,0 +1,142 @@
+---
+title: FAQ
+description: Answers to the most frequently asked questions about WikiDocs setup, customization, and content management.
+category: Help
+updatedAt: "2026-02-24"
+author: Your Name
+tags: [faq, help]
+---
+
+## General
+
+### What is WikiDocs?
+
+WikiDocs is a fully modular, open-source documentation portal template built with **Next.js 14**, **TypeScript**, and **Tailwind CSS**. It's designed to be:
+
+- Easy to set up locally (one command)
+- Easy to customize (design tokens, navigation config)
+- Easy to extend (add pages by creating MDX files)
+
+### Do I need a database?
+
+No. All content is stored as plain `.mdx` files on the filesystem. No database, no CMS, no API keys required.
+
+### Can I deploy this for free?
+
+Yes. Since this is a statically generated Next.js site, you can deploy it for free on:
+
+- **Vercel** (recommended — zero config)
+- **Netlify**
+- **Cloudflare Pages**
+- **GitHub Pages** (with `output: 'export'` in `next.config.mjs`)
+
+---
+
+## Customization
+
+### How do I change the accent color?
+
+Edit `src/app/globals.css`:
+
+```css
+:root {
+  --accent: 236 72 153;  /* change to your RGB color */
+}
+```
+
+### How do I change the font?
+
+1. Import a new Google Font in `src/app/layout.tsx`
+2. Set its `variable` to `'--font-sans'`
+3. Done — the font applies everywhere automatically
+
+### How do I add a logo image?
+
+In `src/components/layout/Navbar.tsx`, replace the icon placeholder with:
+
+```tsx
+import Image from 'next/image'
+
+// Replace the <BookOpen> icon with:
+<Image src="/logo.svg" alt="Logo" width={28} height={28} />
+```
+
+Place your logo in the `public/` folder.
+
+### Can I disable the TOC?
+
+Yes. In `src/app/docs/[...slug]/page.tsx`, change:
+
+```tsx
+toc={toc.length > 0 ? <TOCPanel items={toc} /> : null}
+// to:
+toc={null}
+```
+
+Or remove the `<TOCPanel>` block entirely.
+
+---
+
+## Content
+
+### How do I use Callout blocks?
+
+Use the `<Callout>` component directly in your MDX:
+
+```mdx
+<Callout type="warning">
+  This action cannot be undone.
+</Callout>
+```
+
+Available types: `info`, `tip`, `warning`, `danger`, `note`
+
+### How do I add code examples?
+
+Use fenced code blocks with a language identifier:
+
+````mdx
+```typescript
+const greeting: string = 'Hello, world!'
+console.log(greeting)
+```
+````
+
+The language label appears in the code block header, with a copy button.
+
+### How do I link between pages?
+
+Use standard Markdown links with the full `/docs/` path:
+
+```mdx
+See the [Quick Start](/docs/getting-started/quick-start) guide.
+```
+
+### How do I add images?
+
+1. Place the image in `public/images/`
+2. Reference it in MDX:
+
+```mdx
+![Alt text](/images/my-diagram.png)
+```
+
+For optimized images with Next.js `<Image>`, import it as a component in your MDX.
+
+---
+
+## Troubleshooting
+
+### The page is blank / shows a 404
+
+Check that:
+1. The MDX file exists at the correct path in `content/docs/`
+2. The slug in `navigation.ts` matches the file path exactly
+
+### Styles are not applying
+
+Run `npm run dev` again — sometimes Tailwind's JIT compiler needs a restart to pick up new class names.
+
+### `Module not found` errors after adding a component
+
+Make sure the import path uses `@/` (mapped to `src/`) and that the file extension is `.tsx`, not `.ts` (for React components).

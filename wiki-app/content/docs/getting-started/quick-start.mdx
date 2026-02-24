@@ -1,0 +1,78 @@
+---
+title: Quick Start
+description: Get WikiDocs running on your machine in under 2 minutes.
+category: Getting Started
+updatedAt: "2026-02-24"
+author: Your Name
+tags: [setup, install]
+---
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- **Node.js 18+** installed ([nodejs.org](https://nodejs.org))
+- **npm**, **yarn**, or **pnpm** (npm ships with Node.js)
+
+## Step 1 — Clone or download
+
+If you have a Git repository:
+
+```bash
+git clone https://github.com/your-org/wiki-docs.git
+cd wiki-docs/wiki-app
+```
+
+Or simply navigate to the project folder:
+
+```bash
+cd wiki-app
+```
+
+## Step 2 — Install dependencies
+
+```bash
+npm install
+```
+
+<Callout type="tip">
+  **pnpm** is faster and saves disk space. Install it once with `npm install -g pnpm`, then run `pnpm install`.
+</Callout>
+
+## Step 3 — Start the dev server
+
+```bash
+npm run dev
+```
+
+The site is now running at **[http://localhost:3000](http://localhost:3000)**.
+
+Changes to `.mdx` files in `content/docs/` are reflected immediately (hot reload).
+
+## Step 4 — Build for production
+
+When you're ready to deploy:
+
+```bash
+npm run build
+npm start
+```
+
+## Available Commands
+
+| Command           | Description                          |
+|-------------------|--------------------------------------|
+| `npm run dev`     | Start development server (port 3000) |
+| `npm run build`   | Build optimized production bundle    |
+| `npm start`       | Start the production server          |
+| `npm run lint`    | Run ESLint + TypeScript checks       |
+
+<Callout type="warning">
+  The first build may take 30–60 seconds while Next.js compiles the project. Subsequent builds are much faster due to caching.
+</Callout>
+
+## What to do next
+
+- Edit `src/config/navigation.ts` to update the sidebar structure
+- Create `.mdx` files in `content/docs/` to add new pages
+- Modify `src/app/globals.css` to change colors and fonts

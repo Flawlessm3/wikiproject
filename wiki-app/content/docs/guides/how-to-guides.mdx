@@ -1,0 +1,171 @@
+---
+title: How-to Guides
+description: Step-by-step instructions for common customization tasks — adding pages, changing colors, fonts, and navigation structure.
+category: Guides
+updatedAt: "2026-02-24"
+author: Your Name
+tags: [how-to, customization]
+---
+
+## Add a New Page
+
+### 1. Create the MDX file
+
+```bash
+# Example: a new "Security" page under "Guides"
+touch content/docs/guides/security.mdx
+```
+
+### 2. Write the frontmatter
+
+```mdx
+---
+title: Security Best Practices
+description: How to secure your application.
+category: Guides
+updatedAt: "2026-02-24"
+---
+
+## Overview
+
+Your content here...
+```
+
+### 3. Register in navigation
+
+Open `src/config/navigation.ts` and add:
+
+```ts
+{
+  title: 'Guides',
+  items: [
+    { title: 'How-to Guides',        slug: 'guides/how-to-guides' },
+    { title: 'Security',             slug: 'guides/security' },  // ← add this
+  ],
+}
+```
+
+The page now appears in the sidebar and gets prev/next navigation automatically.
+
+---
+
+## Add a New Category
+
+### 1. Create the directory
+
+```bash
+mkdir content/docs/advanced
+```
+
+### 2. Add pages inside it
+
+```bash
+touch content/docs/advanced/plugins.mdx
+touch content/docs/advanced/custom-themes.mdx
+```
+
+### 3. Add a new group in navigation
+
+```ts
+{
+  title: 'Advanced',       // ← new group
+  collapsible: true,
+  defaultOpen: false,
+  items: [
+    { title: 'Plugins',       slug: 'advanced/plugins' },
+    { title: 'Custom Themes', slug: 'advanced/custom-themes' },
+  ],
+}
+```
+
+---
+
+## Change Colors
+
+All colors are in `src/app/globals.css`. Edit the `:root` block for light mode and `.dark` block for dark mode.
+
+### Change accent color
+
+```css
+:root {
+  --accent: 236 72 153;       /* pink-500 */
+  --accent-hover: 244 114 182; /* pink-400 */
+}
+.dark {
+  --accent: 244 114 182;
+  --accent-hover: 249 168 212;
+}
+```
+
+### Change background
+
+```css
+.dark {
+  --bg-base: 0 0 0;           /* pure black */
+  --bg-surface: 10 10 10;
+}
+```
+
+---
+
+## Change Fonts
+
+### Step 1 — Load the font
+
+Edit `src/app/layout.tsx` to import a different Google Font:
+
+```tsx
+import { Inter } from 'next/font/google'
+// Change to:
+import { Geist } from 'next/font/google'
+
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-sans',
+})
+```
+
+Or use a self-hosted font with `next/font/local`.
+
+### Step 2 — Update the CSS variable
+
+The `--font-sans` variable in `globals.css` is already wired to Tailwind via `tailwind.config.ts`. No further changes needed.
+
+---
+
+## Add Custom Callout Types
+
+The `<Callout>` component in `src/components/content/mdx/Callout.tsx` supports 5 types by default. To add a new one:
+
+```tsx
+const VARIANTS = {
+  // ... existing variants
+  success: {
+    icon: CheckCircle,
+    containerClass: 'bg-green-500/10 border-green-500/25',
+    iconClass: 'text-green-400',
+    titleClass: 'text-green-300',
+    textClass:  'text-green-200/80',
+  },
+}
+```
+
+Then use it in MDX:
+
+```mdx
+<Callout type="success">
+  Your operation completed successfully!
+</Callout>
+```
+
+---
+
+## Enable a TOC on a Page
+
+The TOC is generated automatically from H2/H3/H4 headings in the MDX file. It appears on the right side on desktop (≥1280px).
+
+If a page has no headings, the TOC column is hidden automatically.
+
+<Callout type="info">
+  The TOC requires `rehype-slug` to add IDs to headings. This is already configured in `src/components/content/MDXContent.tsx`.
+</Callout>

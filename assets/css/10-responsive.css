@@ -1,0 +1,289 @@
+/* ==========================================================================
+   10 — RESPONSIVE STYLES
+   Breakpoints:
+     Desktop  → > 1180px  (3-column: sidebar / content / toc)
+     Tablet   → 768–1180px (sidebar narrower, toc hidden/collapsible)
+     Mobile   → < 768px   (sidebar as drawer, toc as dropdown)
+   ========================================================================== */
+
+/* ═══════════════════════════════════════════════════════════
+   TABLET  (max-width: 1180px)
+   - TOC hidden from right column, replaced by collapsible inline
+   - Sidebar stays but can be slightly narrower
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 1180px) {
+
+  /* Hide right TOC panel column */
+  .docs-layout__body {
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    grid-template-areas: "sidebar content";
+  }
+  .toc-panel {
+    display: none;
+  }
+
+  /* Show inline collapsible TOC */
+  .toc-collapsible {
+    display: block;
+    margin-bottom: var(--sp-6);
+  }
+
+  /* Slightly narrow sidebar */
+  :root {
+    --sidebar-width: 240px;
+  }
+
+  /* Pagination full width */
+  .pagination-nav {
+    grid-template-columns: 1fr;
+  }
+  .pagination-card--next {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  /* Content padding */
+  :root {
+    --content-px: var(--sp-6);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE  (max-width: 768px)
+   - Sidebar becomes off-canvas drawer
+   - Hamburger visible in navbar
+   - Content full-width
+   - Navbar simplified
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Layout: single column */
+  .docs-layout__body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "content";
+    padding-top: var(--nav-height);
+  }
+
+  /* ─── Sidebar: off-canvas drawer ─── */
+  .sidebar {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    z-index: var(--z-drawer);
+    transform: translateX(-100%);
+    transition: transform var(--ease-slower), box-shadow var(--ease-slower);
+    height: calc(100vh - var(--nav-height));
+    border-right: 1px solid var(--color-border);
+    box-shadow: none;
+  }
+  .sidebar.is-open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-xl);
+  }
+
+  /* Overlay visible */
+  .sidebar-overlay {
+    display: block;
+    pointer-events: none;
+  }
+  .sidebar-overlay.is-visible {
+    pointer-events: auto;
+  }
+
+  /* ─── Navbar mobile ─── */
+  .navbar__mobile-btn {
+    display: flex;
+  }
+  .navbar__search-btn {
+    min-width: unset;
+    padding: var(--sp-2);
+  }
+  .navbar__search-hint {
+    display: none;
+  }
+  .navbar__nav {
+    display: none;
+  }
+  .navbar__brand {
+    min-width: unset;
+    flex: 1;
+  }
+
+  /* ─── Content ─── */
+  .page-container {
+    padding: var(--sp-6) var(--sp-4);
+  }
+  :root {
+    --content-px: var(--sp-4);
+  }
+
+  /* ─── Article headings scale down ─── */
+  .article-header__title {
+    font-size: var(--text-2xl);
+  }
+  .article-header__desc {
+    font-size: var(--text-base);
+  }
+  .heading--h2 {
+    font-size: var(--text-xl);
+  }
+  .heading--h3 {
+    font-size: var(--text-lg);
+  }
+
+  /* ─── Code block ─── */
+  .code-block__pre {
+    padding: var(--sp-4);
+  }
+  .code-block__code {
+    font-size: var(--text-xs);
+  }
+
+  /* ─── Table ─── */
+  .table-wrap {
+    margin: 0 calc(-1 * var(--sp-4));
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  /* ─── Related links: stacked ─── */
+  .related-links__grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ─── Article meta: wrap ─── */
+  .article-meta {
+    gap: var(--sp-2);
+  }
+
+  /* ─── Feedback block: stacked ─── */
+  .feedback-block {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-3);
+  }
+  .feedback-block__question {
+    margin-right: 0;
+  }
+
+  /* ─── Back to top: closer to edge ─── */
+  .back-to-top {
+    bottom: var(--sp-5);
+    right: var(--sp-5);
+  }
+
+  /* ─── Search modal ─── */
+  .search-modal {
+    max-width: none;
+    margin: 0;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+  }
+  .search-overlay {
+    align-items: flex-end;
+    padding-top: 0;
+  }
+
+  /* ─── Breadcrumbs: shorter ─── */
+  .breadcrumbs__list {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+  /* Show only last 2 items on very small screens */
+  .breadcrumbs__item:not(:nth-last-child(-n+3)),
+  .breadcrumbs__sep:not(:nth-last-child(-n+4)) {
+    display: none;
+  }
+
+  /* ─── State blocks ─── */
+  .state-block {
+    padding: var(--sp-8) var(--sp-4);
+  }
+  .state-block__icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  /* ─── Pagination ─── */
+  .pagination-nav {
+    grid-template-columns: 1fr;
+    gap: var(--sp-3);
+  }
+  .pagination-card--next {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LARGE DESKTOP  (min-width: 1440px)
+   - Wider sidebar and toc for ultra-wide screens
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 1440px) {
+  :root {
+    --sidebar-width: 288px;
+    --toc-width:     240px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PRINT
+   - Clean, minimal print view
+   ═══════════════════════════════════════════════════════════ */
+@media print {
+  .navbar,
+  .sidebar,
+  .toc-panel,
+  .back-to-top,
+  .feedback-block,
+  .pagination-nav,
+  .share-btn,
+  .search-overlay {
+    display: none !important;
+  }
+
+  .docs-layout__body {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+  }
+
+  .page-container {
+    max-width: none;
+    padding: 0;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .callout,
+  .code-block,
+  .quote,
+  .table-wrap {
+    break-inside: avoid;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   - Respect user system preferences
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

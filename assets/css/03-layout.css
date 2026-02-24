@@ -1,0 +1,114 @@
+/* ==========================================================================
+   03 — LAYOUT MODULES
+   Modules: AppShell / DocsLayout, PageContainer, ResponsiveColumnManager
+   ========================================================================== */
+
+/* ═══════════════════════════════════════════════════════════
+   MODULE 1: AppShell / DocsLayout
+   PURPOSE : Main page skeleton — controls zones: navbar / sidebar / content / toc
+   VARIANTS:
+     .docs-layout                → 3-column full layout (default)
+     .docs-layout--no-sidebar    → without left sidebar
+     .docs-layout--no-toc        → without right TOC
+     .docs-layout--content-only  → content column only
+   ═══════════════════════════════════════════════════════════ */
+
+.docs-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ─── Layout body: 3-column grid ─── */
+.docs-layout__body {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--toc-width);
+  grid-template-areas: "sidebar content toc";
+  align-items: start;
+  min-height: calc(100vh - var(--nav-height));
+  padding-top: var(--nav-height);
+  max-width: var(--page-max-width);
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ─── Column assignments ─── */
+.docs-layout__body > .sidebar      { grid-area: sidebar; }
+.docs-layout__body > .content-area { grid-area: content; }
+.docs-layout__body > .toc-panel    { grid-area: toc; }
+
+/* ─── Layout variants ─── */
+.docs-layout--no-sidebar .docs-layout__body {
+  grid-template-columns: 0 minmax(0, 1fr) var(--toc-width);
+}
+.docs-layout--no-sidebar .sidebar {
+  display: none;
+}
+
+.docs-layout--no-toc .docs-layout__body {
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr) 0;
+}
+.docs-layout--no-toc .toc-panel {
+  display: none;
+}
+
+.docs-layout--content-only .docs-layout__body {
+  grid-template-columns: 0 minmax(0, 1fr) 0;
+}
+.docs-layout--content-only .sidebar,
+.docs-layout--content-only .toc-panel {
+  display: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MODULE 2: PageContainer
+   PURPOSE : Constrains article width, sets inner padding.
+             Place inside .content-area.
+   VARIANTS:
+     (default)               → bounded by --content-max-width
+     .page-container--wide   → no max-width restriction
+     .page-container--center → horizontally centered
+   ═══════════════════════════════════════════════════════════ */
+
+.page-container {
+  max-width: var(--content-max-width);
+  width: 100%;
+  padding: var(--content-py) var(--content-px);
+}
+
+.page-container--wide {
+  max-width: none;
+}
+
+.page-container--center {
+  margin: 0 auto;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MODULE 3: Content Area (middle column)
+   ═══════════════════════════════════════════════════════════ */
+
+.content-area {
+  min-width: 0; /* prevent overflow in grid */
+  position: relative;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   Optional: Footer zone
+   Add .docs-footer inside .docs-layout for a bottom bar.
+   ═══════════════════════════════════════════════════════════ */
+
+.docs-footer {
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  padding: var(--sp-6) var(--sp-8);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}

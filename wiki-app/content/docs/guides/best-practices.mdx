@@ -1,0 +1,120 @@
+---
+title: Best Practices
+description: Recommendations for organizing content, writing effective documentation, and maintaining the wiki long-term.
+category: Guides
+updatedAt: "2026-02-24"
+author: Your Name
+tags: [best-practices, writing, content]
+---
+
+## Content Organization
+
+### Keep pages focused
+
+Each page should cover one topic. If a page grows beyond ~1500 words, consider splitting it into sub-pages.
+
+### Use consistent frontmatter
+
+Set a standard template for all pages:
+
+```mdx
+---
+title: Page Title
+description: One sentence summary (used in metadata and search results).
+category: Category Name
+updatedAt: "YYYY-MM-DD"
+author: Author Name
+tags: [tag1, tag2]
+---
+```
+
+### Slug naming conventions
+
+Use lowercase, hyphenated slugs that match the directory structure:
+
+| Content path | URL |
+|---|---|
+| `content/docs/core-concepts/overview.mdx` | `/docs/core-concepts/overview` |
+| `content/docs/faq/index.mdx` | `/docs/faq` |
+| `content/docs/commands.mdx` | `/docs/commands` |
+
+---
+
+## Writing Style
+
+### Start with the outcome
+
+Begin each page by explaining **what the reader will be able to do** after reading it, not the background theory.
+
+### Use headings generously
+
+Good heading structure:
+1. Helps readers scan the page
+2. Generates a useful TOC automatically
+3. Creates anchor links for deep linking
+
+### Prefer short paragraphs
+
+Keep paragraphs to 3-4 sentences. Dense walls of text are harder to scan.
+
+---
+
+## Using Callouts Effectively
+
+| Callout type | When to use |
+|---|---|
+| `info` | Supplementary context, good-to-know facts |
+| `tip` | Shortcuts, recommended approaches |
+| `warning` | Things that might go wrong |
+| `danger` | Irreversible or destructive operations |
+| `note` | Technical caveats or edge cases |
+
+<Callout type="tip">
+  Don't overuse callouts. If every paragraph has one, they lose their visual emphasis.
+</Callout>
+
+---
+
+## Maintenance
+
+### Keep `updatedAt` current
+
+Update the `updatedAt` frontmatter field whenever you revise a page. It's displayed to readers in the article metadata.
+
+### Use `related` links
+
+When articles are closely related, link them explicitly:
+
+```mdx
+---
+related:
+  - getting-started/installation
+  - core-concepts/architecture
+---
+```
+
+This populates the "Related Articles" section at the bottom of the page.
+
+### Review disabled items regularly
+
+Items marked `disabled: true` in `navigation.ts` are shown grayed out with a badge. Remove the `disabled` flag when the page is ready.
+
+---
+
+## Performance
+
+<Callout type="info">
+  All pages are statically generated at build time. Adding more pages does **not** slow down the runtime — only the build step gets longer.
+</Callout>
+
+### Keep images optimized
+
+When adding images, use Next.js `<Image>` component for automatic optimization:
+
+```tsx
+import Image from 'next/image'
+
+<Image src="/your-image.png" alt="Description" width={800} height={400} />
+```
+
+Place images in the `public/` directory.

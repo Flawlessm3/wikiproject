@@ -1,0 +1,324 @@
+---
+title: CLI Commands
+description: A full reference for all npm scripts and command-line tools used in WikiDocs.
+category: Reference
+updatedAt: "2026-02-24"
+author: Your Name
+tags: [cli, commands, npm, scripts, reference]
+badge: Ref
+related:
+  - getting-started/quick-start
+  - getting-started/installation
+---
+
+A complete reference for every command you'll use while developing and deploying a WikiDocs site.
+
+---
+
+## npm Scripts
+
+These scripts are defined in `package.json` and run with `npm run <script>`.
+
+### `npm run dev`
+
+Starts the Next.js development server with hot-reload enabled.
+
+```bash
+npm run dev
+```
+
+| Detail | Value |
+|---|---|
+| Default port | `3000` |
+| URL | `http://localhost:3000` |
+| Hot reload | Yes — changes reflect instantly |
+| Source maps | Yes |
+
+Use this during day-to-day development. The server watches all source files and automatically refreshes the browser.
+
+<Callout type="tip">
+To use a different port, run: `npm run dev -- -p 4000` (or any available port number).
+</Callout>
+
+---
+
+### `npm run build`
+
+Compiles the production-ready build and pre-renders all pages via Static Site Generation (SSG).
+
+```bash
+npm run build
+```
+
+What this does:
+
+1. Runs TypeScript type-checking
+2. Compiles all React components
+3. Calls `generateStaticParams()` to get all doc slugs
+4. Pre-renders every page to static HTML
+5. Outputs the result to the `.next/` directory
+
+<Callout type="warning">
+Always run `npm run build` before deploying to production. Deployment platforms like Vercel run this automatically.
+</Callout>
+
+---
+
+### `npm run start`
+
+Starts a production HTTP server using the output of `npm run build`.
+
+```bash
+npm run build && npm run start
+```
+
+| Detail | Value |
+|---|---|
+| Requires | `npm run build` to have run first |
+| Default port | `3000` |
+| Hot reload | No |
+
+Use `npm run start` to verify that the production build behaves correctly before deploying.
+
+---
+
+### `npm run lint`
+
+Runs ESLint on all TypeScript and TSX files.
+
+```bash
+npm run lint
+```
+
+WikiDocs ships with the default Next.js ESLint config (`eslint-config-next`). It catches:
+
+- React rules (hooks, prop-types, JSX)
+- Next.js rules (image optimization, font usage, etc.)
+- Import resolution errors
+
+To auto-fix fixable issues:
+
+```bash
+npm run lint -- --fix
+```
+
+---
+
+### `npm run type-check`
+
+Runs the TypeScript compiler in check-only mode (no output emitted).
+
+```bash
+npm run type-check
+```
+
+Equivalent to running `tsc --noEmit`. Useful in CI pipelines to catch type errors without building.
+
+---
+
+## Content Commands
+
+### Adding a new page
+
+There is no generator script — pages are created by adding an MDX file:
+
+```bash
+# Create a new guide
+touch content/docs/guides/my-new-guide.mdx
+```
+
+Then add a frontmatter block:
+
+```mdx
+---
+title: My New Guide
+description: A short description of what this page covers.
+category: Guides
+updatedAt: "2026-02-24"
+author: Your Name
+tags: [guide]
+---
+
+Content goes here.
+```
+
+Finally register it in `src/config/navigation.ts`:
+
+```ts
+{
+  title: 'Guides',
+  items: [
+    // ... existing items
+    { title: 'My New Guide', slug: 'guides/my-new-guide' },
+  ],
+},
+```
+
+---
+
+### Removing a page
+
+1. Delete the MDX file: `rm content/docs/guides/old-page.mdx`
+2. Remove the entry from `src/config/navigation.ts`
+3. Update any `related:` frontmatter fields in other pages that referenced this slug
+
+---
+
+## Node.js / npx Commands
+
+### `npx create-next-app`
+
+Used when scaffolding a new Next.js project from scratch (not needed for WikiDocs, which is already scaffolded).
+
+```bash
+npx create-next-app@14 my-wiki --typescript --tailwind --app
+```
+
+---
+
+### `npx next info`
+
+Prints your Next.js environment information — useful when reporting bugs.
+
+```bash
+npx next info
+```
+
+Sample output:
+
+```
+Operating System:
+  Platform: linux
+  Arch: x64
+  Version: Ubuntu 22.04
+Binaries:
+  Node: 20.11.1
+  npm: 10.2.4
+Packages:
+  next: 14.2.5
+  react: 18.3.1
+  react-dom: 18.3.1
+```
+
+---
+
+### `npx next telemetry`
+
+Next.js collects anonymous usage telemetry by default. To disable it:
+
+```bash
+npx next telemetry disable
+```
+
+To check the current status:
+
+```bash
+npx next telemetry status
+```
+
+---
+
+## Environment Variables
+
+WikiDocs uses no environment variables in the default setup. If you add API integrations (analytics, CMS, etc.), store secrets in `.env.local`:
+
+```bash
+# .env.local  — never commit this file
+NEXT_PUBLIC_ANALYTICS_ID=UA-XXXXX
+MY_SECRET_API_KEY=sk-...
+```
+
+<Callout type="warning">
+`.env.local` is already in `.gitignore`. Never commit API keys or secrets to source control.
+</Callout>
+
+Variables prefixed with `NEXT_PUBLIC_` are exposed to the browser. All others remain server-side only.
+
+---
+
+## Package Management
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+Run this once after cloning the repository or whenever `package.json` changes.
+
+### Add a new dependency
+
+```bash
+npm install <package-name>
+```
+
+Example — adding `date-fns` for date formatting:
+
+```bash
+npm install date-fns
+```
+
+### Add a dev dependency
+
+```bash
+npm install -D <package-name>
+```
+
+Example — adding a type definitions package:
+
+```bash
+npm install -D @types/some-package
+```
+
+### Update all dependencies
+
+```bash
+npm update
+```
+
+<Callout type="tip">
+After updating Next.js, always check the [Next.js upgrade guide](https://nextjs.org/docs/upgrading) for breaking changes.
+</Callout>
+
+### Check for outdated packages
+
+```bash
+npm outdated
+```
+
+---
+
+## Git Commands (recommended workflow)
+
+These are standard Git commands; none are WikiDocs-specific.
+
+```bash
+# Start a new feature branch
+git checkout -b feat/my-feature
+
+# Stage and commit changes
+git add .
+git commit -m "feat: add my new guide"
+
+# Push and open a pull request
+git push origin feat/my-feature
+```
+
+---
+
+## Quick Reference Table
+
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run start` | Serve production build locally |
+| `npm run lint` | Run ESLint |
+| `npm run type-check` | Run TypeScript checks |
+| `npm install` | Install all dependencies |
+| `npm install <pkg>` | Add a dependency |
+| `npm install -D <pkg>` | Add a dev dependency |
+| `npm update` | Update all dependencies |
+| `npm outdated` | List outdated packages |
+| `npx next info` | Print Next.js environment info |
+| `npx next telemetry disable` | Disable anonymous telemetry |
