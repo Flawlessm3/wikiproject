@@ -4,35 +4,35 @@ import path from 'path'
 import type { WikiData } from '@/types/wiki'
 
 const DATA_PATH = path.join(process.cwd(), 'data', 'wiki.json')
-const KV_KEY = 'wiki-data'
 
-// Vercel KV is available when KV_REST_API_URL + KV_REST_API_TOKEN env vars are set.
-// Locally we fall back to the filesystem so no extra setup is needed.
-function isKVAvailable() {
-  return !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
-}
+// Use Prisma when DATABASE_URL is set (Vercel / any PostgreSQL).
+// Fall back to the local filesystem otherwise — zero setup for local dev.
+const useDatabase = !!process.env.DATABASE_URL
 
 async function readData(): Promise<WikiData> {
-  if (isKVAvailable()) {
-    const { kv } = await import('@vercel/kv')
-    const data = await kv.get<WikiData>(KV_KEY)
-    if (data) return data
-    // KV is empty (first deploy) — seed from bundled wiki.json
-    const seed = JSON.parse(await fs.readFile(DATA_PATH, 'utf-8')) as WikiData
-    await kv.set(KV_KEY, seed)
-    return seed
+  if (useDatabase) {
+    const { prisma } = await import('@/lib/prisma')
+    let record = await prisma.wikiStore.findUnique({ where: { id: 1 } })
+    if (!record) {
+      // First deploy: seed from bundled wiki.json
+      const seed = JSON.parse(await fs.readFile(DATA_PATH, 'utf-8'))
+      record = await prisma.wikiStore.create({ data: { id: 1, data: seed } })
+    }
+    return record.data as unknown as WikiData
   }
-  // Local dev: read from filesystem
   return JSON.parse(await fs.readFile(DATA_PATH, 'utf-8')) as WikiData
 }
 
 async function writeData(data: WikiData): Promise<void> {
-  if (isKVAvailable()) {
-    const { kv } = await import('@vercel/kv')
-    await kv.set(KV_KEY, data)
+  if (useDatabase) {
+    const { prisma } = await import('@/lib/prisma')
+    await prisma.wikiStore.upsert({
+      where:  { id: 1 },
+      create: { id: 1, data: data as object },
+      update: { data: data as object },
+    })
     return
   }
-  // Local dev: write to filesystem
   await fs.writeFile(DATA_PATH, JSON.stringify(data, null, 2), 'utf-8')
 }
 
